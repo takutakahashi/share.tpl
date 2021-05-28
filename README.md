@@ -1,6 +1,7 @@
 # share.tpl
 
 Global Templating and Snippet sharing Manager
+
 `share.tpl` is pronounced `ʃéər-tee-pee-él`
 
 ## Usage
