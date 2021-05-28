@@ -1,21 +1,23 @@
-# shclip
-Global Clipboard Manager
+# share.tpl
+
+Global Templating and Snippet sharing Manager
+`share.tpl` is pronounced `ʃéər-tee-pee-él`
 
 ## Usage
 
-### List clip
+### List template
 
 ```
-$ clip list
+$ tpl list
 github.com/takutakahashi/clipboad/git/new_branch
-github.com/takutakahashi/clipboad/project_template/go
-github.com/awesome-clip/good-clipboard/good-template
+github.com/takutakahashi/templates/project_template/go
+github.com/awesome-tpl/good-template
 ...
 ```
 
-### Describe clip
+### Describe template
 ```
-$ clip describe {clip name}
+$ tpl describe {clip name}
 Title: awesome snippet
 Description: This is VeryVery Good snippet.
 Argments:
@@ -35,7 +37,7 @@ Hello @@(username)! your email address is @@(email).
 
 In HOME directory:
 ```
-.clip.yaml
-.clip/config.yaml
-.local/clip/config.yaml
+.tpl.yaml
+.tpl/config.yaml
+.local/tpl/config.yaml
 ```
