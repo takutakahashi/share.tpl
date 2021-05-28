@@ -28,3 +28,14 @@ Argments:
 Data: |
 Hello @@(username)! your email address is @@(email).
 ```
+
+## Settings
+
+### Configuration File
+
+In HOME directory:
+```
+.clip.yaml
+.clip/config.yaml
+.local/clip/config.yaml
+```
