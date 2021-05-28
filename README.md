@@ -1,0 +1,2 @@
+# shclip
+Global Clipboard Manager
