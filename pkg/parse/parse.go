@@ -4,15 +4,58 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"text/template"
 
 	"github.com/Masterminds/sprig"
+	"github.com/imdario/mergo"
+	"github.com/sirupsen/logrus"
 	"github.com/takutakahashi/share.tpl/pkg/cfg"
 )
 
+/**
+./abc/test.txt
+./abc/test2.txt
+./abc/def/test2.txt
+
+ExecuteFiles(".", "dist", data) ->
+  dist/abc/test.txt
+  dist/abc/test2.txt
+  dist/abc/def/test.txt
+
+  ExecuteFiles(".", "dist") -> ExecuteFiles("./abc", "dist") -> ["dist/abc/test.txt", "dist/abc/test2.txt", ...]
+*/
+// TODO: impl
+func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data map[string]string) (map[string][]byte, error) {
+	ret := map[string][]byte{}
+	if infos, err := ioutil.ReadDir(inputRootPath); err == nil {
+		logrus.Info(infos)
+		for _, info := range infos {
+			r, err := ExecuteFiles(conf, fmt.Sprintf("%s/%s", inputRootPath, info.Name()), fmt.Sprintf("%s/%s", outputRootPath, info.Name()), data)
+			if err != nil {
+				return nil, err
+			}
+			if err := mergo.Map(&ret, r, mergo.WithOverride); err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		//	buf, err := ioutil.ReadFile(inputRootPath)
+		//	if err != nil {
+		//		return nil, err
+		//	}
+		//	conf, err := cfg.Parse()
+		//	if err != nil {
+		//		return nil, err
+		//	}
+		//	d, err := Execute()
+		ret[outputRootPath] = []byte{}
+	}
+	return ret, nil
+}
+
 func Execute(conf cfg.Config, in []byte, data map[string]string) ([]byte, error) {
 	data, err := fill(conf, data)
-	fmt.Println(conf)
 	if err != nil {
 		return nil, err
 	}

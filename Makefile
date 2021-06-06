@@ -6,3 +6,5 @@ list: build
 	dist/cmd list
 show: build
 	dist/cmd show src/test.txt
+dir: build
+	DEBUG=true dist/cmd src/dirtest

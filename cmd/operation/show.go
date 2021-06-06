@@ -33,9 +33,9 @@ func Show(path string) (string, error) {
 	dsc := `
   Description: {{ .Description }}
   Embedded values: 
-    {{ .EmbedValues }}
+{{ .EmbedValues | indent 4 }}
   content: |
-{{ .F | indent 4  }}
+{{ .F | indent 4 }}
 # end-of-content
   `
 

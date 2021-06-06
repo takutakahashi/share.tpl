@@ -16,6 +16,7 @@ func main() {
 		Name: "life.go",
 		Action: func(c *cli.Context) error {
 			sets := c.StringSlice("set")
+			output := c.String("output")
 			path := c.Args().First()
 			_ = sets
 			data := map[string]string{}
@@ -27,20 +28,29 @@ func main() {
 				data[sp[0]] = sp[1]
 			}
 			out, err := operation.Export(operation.ExportOpt{
-				Path: path,
-				Type: "snippet",
-				Data: data,
+				Path:          path,
+				OutputDirPath: output,
+				Data:          data,
 			})
 			if err != nil {
 				return err
 			}
-			fmt.Println(string(out.Files["stdout"]))
+			if os.Getenv("DEBUG") != "" {
+				fmt.Println(out.Files)
+			}
+			if output != "" {
+				fmt.Println(string(out.Files["stdout"]))
+			}
 			return nil
 		},
 		Flags: []cli.Flag{
 			&cli.StringSliceFlag{
 				Name:  "set",
 				Usage: "set variables. multiple value",
+			},
+			&cli.StringFlag{
+				Name:  "output",
+				Usage: "output dir path",
 			},
 		},
 		Commands: []*cli.Command{

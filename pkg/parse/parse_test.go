@@ -86,3 +86,44 @@ func TestExecute(t *testing.T) {
 		})
 	}
 }
+
+func TestExecuteFiles(t *testing.T) {
+	type args struct {
+		conf           cfg.Config
+		inputRootPath  string
+		outputRootPath string
+		data           map[string]string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    map[string][]byte
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			args: args{
+				conf:           cfg.Config{},
+				inputRootPath:  "../../src/dirtest",
+				outputRootPath: "../../src/dest",
+				data:           map[string]string{},
+			},
+			want: map[string][]byte{
+				"src/dest/src/files/test.py": nil,
+				"src/dest/test.py":           nil,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ExecuteFiles(tt.args.conf, tt.args.inputRootPath, tt.args.outputRootPath, tt.args.data)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ExecuteFiles() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ExecuteFiles() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
