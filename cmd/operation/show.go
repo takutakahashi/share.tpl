@@ -3,9 +3,10 @@ package operation
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 	"io/ioutil"
+	"text/template"
 
+	"github.com/Masterminds/sprig"
 	"github.com/takutakahashi/share.tpl/pkg/cfg"
 )
 
@@ -33,12 +34,12 @@ func Show(path string) (string, error) {
   Description: {{ .Description }}
   Embedded values: 
     {{ .EmbedValues }}
-  content:
-
-{{ .F }}
+  content: |
+{{ .F | indent 4  }}
+# end-of-content
   `
 
-	tmpl, err := template.New("file.txt").Parse(dsc)
+	tmpl, err := template.New("file.txt").Funcs(sprig.TxtFuncMap()).Parse(dsc)
 	if err != nil {
 		return "", err
 	}
