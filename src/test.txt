@@ -1,2 +1,2 @@
-hello @@(name)
+hello {{ .name }}
 hello

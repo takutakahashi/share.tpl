@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io/ioutil"
 
+	"github.com/takutakahashi/share.tpl/pkg/cfg"
 	"github.com/takutakahashi/share.tpl/pkg/parse"
 )
 
@@ -34,7 +35,11 @@ func exportSnippet(opt ExportOpt) (ExportOut, error) {
 	if err != nil {
 		return ExportOut{}, err
 	}
-	out, err := parse.Execute(in, opt.Data)
+	conf, err := cfg.ParsePath(opt.Path)
+	if err != nil {
+		return ExportOut{}, err
+	}
+	out, err := parse.Execute(conf, in, opt.Data)
 	if err != nil {
 		return ExportOut{}, err
 	}

@@ -3,10 +3,13 @@ package parse
 import (
 	"reflect"
 	"testing"
+
+	"github.com/takutakahashi/share.tpl/pkg/cfg"
 )
 
 func TestExecute(t *testing.T) {
 	type args struct {
+		conf cfg.Config
 		in   []byte
 		data map[string]string
 	}
@@ -19,7 +22,13 @@ func TestExecute(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
-				in: []byte("hello @@(name), are you @@(hangly)?"),
+				conf: cfg.Config{
+					Values: []cfg.Value{
+						{Name: "name"},
+						{Name: "hangly"},
+					},
+				},
+				in: []byte(`hello {{ .name }}, are you {{ .hangly }}?`),
 				data: map[string]string{
 					"name":   "bob",
 					"hangly": "HANGLY",
@@ -29,9 +38,32 @@ func TestExecute(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "fill default",
+			args: args{
+				conf: cfg.Config{
+					Values: []cfg.Value{
+						{Name: "name"},
+						{Name: "hangly", Default: "HANGLY"},
+					},
+				},
+				in: []byte(`hello {{ .name }}, are you {{ .hangly }}?`),
+				data: map[string]string{
+					"name": "bob",
+				},
+			},
+			want:    []byte("hello bob, are you HANGLY?"),
+			wantErr: false,
+		},
+		{
 			name: "ng",
 			args: args{
-				in: []byte("hello @@(name), are you @@(hangly)?"),
+				conf: cfg.Config{
+					Values: []cfg.Value{
+						{Name: "name"},
+						{Name: "hangly"},
+					},
+				},
+				in: []byte(`hello {{ .name }}, are you {{ .hangly }}?`),
 				data: map[string]string{
 					"name": "bob",
 				},
@@ -42,7 +74,8 @@ func TestExecute(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := Execute(tt.args.in, tt.args.data)
+			got, err := Execute(tt.args.conf, tt.args.in, tt.args.data)
+			t.Logf("%s", got)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Execute() error = %v, wantErr %v", err, tt.wantErr)
 				return
