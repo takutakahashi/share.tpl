@@ -97,7 +97,7 @@ func TestExecuteFiles(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    map[string][]byte
+		want    map[string]File
 		wantErr bool
 	}{
 		{
@@ -115,9 +115,9 @@ func TestExecuteFiles(t *testing.T) {
 				outputRootPath: "../../src/dest",
 				data:           map[string]string{},
 			},
-			want: map[string][]byte{
-				"../../src/dest/src/files/test.py": []byte(`print("files alice")`),
-				"../../src/dest/src/test.py":       []byte(`print("alice")`),
+			want: map[string]File{
+				"../../src/dest/src/files/test.py": {Data: []byte(`print("files alice")`), Perm: 0664},
+				"../../src/dest/src/test.py":       {Data: []byte(`print("alice")`), Perm: 0664},
 			},
 		},
 	}
@@ -131,7 +131,7 @@ func TestExecuteFiles(t *testing.T) {
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("ExecuteFiles() = %v, want %v", got, tt.want)
 				for k, v := range got {
-					t.Logf("%s, %s", k, string(v))
+					t.Logf("%s, %s", k, string(v.Data))
 				}
 			}
 		})

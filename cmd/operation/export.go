@@ -16,7 +16,7 @@ type ExportOpt struct {
 }
 
 type ExportOut struct {
-	Files map[string][]byte
+	Files map[string]parse.File
 }
 
 func Export(opt ExportOpt) (ExportOut, error) {
@@ -47,7 +47,7 @@ func snippet(target string) bool {
 func exportFile(opt ExportOpt) (ExportOut, error) {
 	opt.Path = fmt.Sprintf("%s/snippet", opt.Path)
 	ret := ExportOut{
-		Files: map[string][]byte{},
+		Files: map[string]parse.File{},
 	}
 	in, err := ioutil.ReadFile(opt.Path)
 	if err != nil {
@@ -61,7 +61,7 @@ func exportFile(opt ExportOpt) (ExportOut, error) {
 	if err != nil {
 		return ExportOut{}, err
 	}
-	ret.Files["stdout"] = out
+	ret.Files["stdout"] = parse.File{Data: out}
 	return ret, nil
 }
 
