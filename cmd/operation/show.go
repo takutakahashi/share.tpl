@@ -11,7 +11,6 @@ import (
 )
 
 func Show(path string) (string, error) {
-
 	cfg, err := cfg.ParsePath(path)
 	if err != nil {
 		return "", err
@@ -26,17 +25,22 @@ func Show(path string) (string, error) {
 		}
 		ev += fmt.Sprintf("%s ... %s, default: %s\n", v.Name, v.Description, v.Default)
 	}
-	f, err := ioutil.ReadFile(path)
+	var f []byte
+	if snippet(path) {
+		f, err = ioutil.ReadFile(fmt.Sprintf("%s/snippet", path))
+	}
 	if err != nil {
 		return "", err
 	}
 	dsc := `
   Description: {{ .Description }}
   Embedded values: 
-    {{ .EmbedValues }}
+{{ .EmbedValues | indent 4 }}
+{{- if .F -}}
   content: |
-{{ .F | indent 4  }}
+{{ .F | indent 4 }}
 # end-of-content
+{{- end -}}
   `
 
 	tmpl, err := template.New("file.txt").Funcs(sprig.TxtFuncMap()).Parse(dsc)

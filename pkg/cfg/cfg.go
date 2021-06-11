@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
 
 	"gopkg.in/yaml.v3"
 )
@@ -23,7 +24,10 @@ type Value struct {
 
 func ParsePath(filePath string) (Config, error) {
 	cfg := Config{}
-	f, err := ioutil.ReadFile(fmt.Sprintf("%s.yaml", filePath))
+	if _, err := ioutil.ReadDir(filePath); err != nil {
+		filePath = path.Dir(filePath)
+	}
+	f, err := ioutil.ReadFile(fmt.Sprintf("%s/.share.yaml", filePath))
 	if err != nil {
 		return cfg, err
 	}

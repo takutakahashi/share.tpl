@@ -1,8 +1,10 @@
 build:
 	go build -o dist/cmd cmd/cmd.go
 run: build
-	dist/cmd src/test.txt
+	DEBUG=true dist/cmd src
 list: build
 	dist/cmd list
 show: build
-	dist/cmd show src/test.txt
+	dist/cmd show src
+dir: build
+	dist/cmd  --output src/dist src/dirtest
