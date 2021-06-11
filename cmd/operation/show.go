@@ -11,7 +11,9 @@ import (
 )
 
 func Show(path string) (string, error) {
-
+	if snippet(path) {
+		path = fmt.Sprintf("%s/snippet", path)
+	}
 	cfg, err := cfg.ParsePath(path)
 	if err != nil {
 		return "", err

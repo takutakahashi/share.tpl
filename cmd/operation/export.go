@@ -19,16 +19,32 @@ type ExportOut struct {
 }
 
 func Export(opt ExportOpt) (ExportOut, error) {
-	if _, err := ioutil.ReadFile(opt.Path); err == nil {
+	if snippet(opt.Path) {
 		return exportFile(opt)
-	} else if _, err := ioutil.ReadDir(opt.Path); err == nil {
-		return exportDir(opt)
 	} else {
-		return ExportOut{}, err
+		return exportDir(opt)
 	}
 }
 
+func snippet(target string) bool {
+	fis, err := ioutil.ReadDir(target)
+	if err != nil {
+		return false
+	}
+	var snippet, conf bool = false, false
+	for _, info := range fis {
+		if info.Name() == "snippet" {
+			snippet = true
+		}
+		if info.Name() == ".share.yaml" {
+			conf = true
+		}
+	}
+	return snippet && conf
+}
+
 func exportFile(opt ExportOpt) (ExportOut, error) {
+	opt.Path = fmt.Sprintf("%s/snippet", opt.Path)
 	ret := ExportOut{
 		Files: map[string][]byte{},
 	}

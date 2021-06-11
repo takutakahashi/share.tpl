@@ -38,8 +38,10 @@ func main() {
 			if os.Getenv("DEBUG") != "" {
 				fmt.Println(out.Files)
 			}
-			if output != "" {
-				fmt.Println(string(out.Files["stdout"]))
+			for k, v := range out.Files {
+				if k == "stdout" {
+					fmt.Println(string(v))
+				}
 			}
 			return nil
 		},
