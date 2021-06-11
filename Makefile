@@ -7,4 +7,4 @@ list: build
 show: build
 	dist/cmd show src
 dir: build
-	DEBUG=true dist/cmd src/dirtest
+	dist/cmd  --output src/dist src/dirtest

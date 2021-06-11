@@ -1,6 +1,7 @@
 package operation
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 
@@ -65,6 +66,9 @@ func exportFile(opt ExportOpt) (ExportOut, error) {
 }
 
 func exportDir(opt ExportOpt) (ExportOut, error) {
+	if opt.OutputDirPath == "" {
+		return ExportOut{}, errors.New("output path is not found")
+	}
 	conf, err := cfg.ParsePath(fmt.Sprintf("%s/.share.yaml", opt.Path))
 	if err != nil {
 		return ExportOut{}, err

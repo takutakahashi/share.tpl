@@ -9,7 +9,6 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/imdario/mergo"
-	"github.com/sirupsen/logrus"
 	"github.com/takutakahashi/share.tpl/pkg/cfg"
 )
 
@@ -29,8 +28,10 @@ ExecuteFiles(".", "dist", data) ->
 func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data map[string]string) (map[string][]byte, error) {
 	ret := map[string][]byte{}
 	if infos, err := ioutil.ReadDir(inputRootPath); err == nil {
-		logrus.Info(infos)
 		for _, info := range infos {
+			if info.Name() == ".share.yaml" {
+				continue
+			}
 			r, err := ExecuteFiles(conf, fmt.Sprintf("%s/%s", inputRootPath, info.Name()), fmt.Sprintf("%s/%s", outputRootPath, info.Name()), data)
 			if err != nil {
 				return nil, err
@@ -40,16 +41,12 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 			}
 		}
 	} else {
-		//	buf, err := ioutil.ReadFile(inputRootPath)
-		//	if err != nil {
-		//		return nil, err
-		//	}
-		//	conf, err := cfg.Parse()
-		//	if err != nil {
-		//		return nil, err
-		//	}
-		//	d, err := Execute()
-		ret[outputRootPath] = []byte{}
+		buf, err := ioutil.ReadFile(inputRootPath)
+		if err != nil {
+			return nil, err
+		}
+		d, err := Execute(conf, buf, data)
+		ret[outputRootPath] = d
 	}
 	return ret, nil
 }

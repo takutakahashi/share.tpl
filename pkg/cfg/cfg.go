@@ -24,7 +24,10 @@ type Value struct {
 
 func ParsePath(filePath string) (Config, error) {
 	cfg := Config{}
-	f, err := ioutil.ReadFile(fmt.Sprintf("%s/.share.yaml", path.Dir(filePath)))
+	if _, err := ioutil.ReadDir(filePath); err != nil {
+		filePath = path.Dir(filePath)
+	}
+	f, err := ioutil.ReadFile(fmt.Sprintf("%s/.share.yaml", filePath))
 	if err != nil {
 		return cfg, err
 	}

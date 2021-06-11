@@ -38,12 +38,7 @@ func main() {
 			if os.Getenv("DEBUG") != "" {
 				fmt.Println(out.Files)
 			}
-			for k, v := range out.Files {
-				if k == "stdout" {
-					fmt.Println(string(v))
-				}
-			}
-			return nil
+			return operation.Write(out.Files)
 		},
 		Flags: []cli.Flag{
 			&cli.StringSliceFlag{

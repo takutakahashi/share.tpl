@@ -103,14 +103,21 @@ func TestExecuteFiles(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
-				conf:           cfg.Config{},
+				conf: cfg.Config{
+					Values: []cfg.Value{
+						{
+							Name:    "name",
+							Default: "alice",
+						},
+					},
+				},
 				inputRootPath:  "../../src/dirtest",
 				outputRootPath: "../../src/dest",
 				data:           map[string]string{},
 			},
 			want: map[string][]byte{
-				"src/dest/src/files/test.py": nil,
-				"src/dest/test.py":           nil,
+				"../../src/dest/src/files/test.py": []byte(`print("files alice")`),
+				"../../src/dest/src/test.py":       []byte(`print("alice")`),
 			},
 		},
 	}
@@ -123,6 +130,9 @@ func TestExecuteFiles(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("ExecuteFiles() = %v, want %v", got, tt.want)
+				for k, v := range got {
+					t.Logf("%s, %s", k, string(v))
+				}
 			}
 		})
 	}
