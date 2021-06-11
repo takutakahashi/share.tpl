@@ -5,12 +5,19 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"text/template"
 
 	"github.com/Masterminds/sprig"
 	"github.com/imdario/mergo"
+	"github.com/sirupsen/logrus"
 	"github.com/takutakahashi/share.tpl/pkg/cfg"
 )
+
+type File struct {
+	Data []byte
+	Perm os.FileMode
+}
 
 /**
 ./abc/test.txt
@@ -25,8 +32,8 @@ ExecuteFiles(".", "dist", data) ->
   ExecuteFiles(".", "dist") -> ExecuteFiles("./abc", "dist") -> ["dist/abc/test.txt", "dist/abc/test2.txt", ...]
 */
 // TODO: impl
-func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data map[string]string) (map[string][]byte, error) {
-	ret := map[string][]byte{}
+func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data map[string]string) (map[string]File, error) {
+	ret := map[string]File{}
 	if infos, err := ioutil.ReadDir(inputRootPath); err == nil {
 		for _, info := range infos {
 			if info.Name() == ".share.yaml" {
@@ -41,12 +48,17 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 			}
 		}
 	} else {
+		info, err := os.Stat(inputRootPath)
+		if err != nil {
+			return nil, err
+		}
 		buf, err := ioutil.ReadFile(inputRootPath)
 		if err != nil {
 			return nil, err
 		}
 		d, err := Execute(conf, buf, data)
-		ret[outputRootPath] = d
+		ret[outputRootPath] = File{Data: d, Perm: info.Mode().Perm()}
+		logrus.Info(ret)
 	}
 	return ret, nil
 }
