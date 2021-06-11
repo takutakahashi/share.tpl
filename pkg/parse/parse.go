@@ -10,7 +10,6 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/imdario/mergo"
-	"github.com/sirupsen/logrus"
 	"github.com/takutakahashi/share.tpl/pkg/cfg"
 )
 
@@ -58,7 +57,6 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 		}
 		d, err := Execute(conf, buf, data)
 		ret[outputRootPath] = File{Data: d, Perm: info.Mode().Perm()}
-		logrus.Info(ret)
 	}
 	return ret, nil
 }
