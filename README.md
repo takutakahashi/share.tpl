@@ -1,8 +1,8 @@
-# share.tpl
+# tnp
 
 Global Templating and Snippet sharing Manager
 
-`share.tpl` is pronounced `ʃéər-tee-pee-él`
+`tnp` is pronounced the same word `temp`
 
 ## Usage
 
@@ -18,7 +18,7 @@ github.com/awesome-tpl/good-template
 
 ### Describe template
 ```
-$ tpl describe {clip name}
+$ tnp describe {clip name}
 Title: awesome snippet
 Description: This is VeryVery Good snippet.
 Argments:
@@ -38,7 +38,7 @@ Hello @@(username)! your email address is @@(email).
 
 In HOME directory:
 ```
-.tpl.yaml
-.tpl/config.yaml
-.local/tpl/config.yaml
+.tnp.yaml
+.tnp/config.yaml
+.local/tnp/config.yaml
 ```
