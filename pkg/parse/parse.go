@@ -10,7 +10,7 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/imdario/mergo"
-	"github.com/takutakahashi/share.tpl/pkg/cfg"
+	"github.com/takutakahashi/tnp/pkg/cfg"
 )
 
 type File struct {

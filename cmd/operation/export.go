@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/takutakahashi/share.tpl/pkg/cfg"
-	"github.com/takutakahashi/share.tpl/pkg/parse"
+	"github.com/takutakahashi/tnp/pkg/cfg"
+	"github.com/takutakahashi/tnp/pkg/parse"
 )
 
 type ExportOpt struct {

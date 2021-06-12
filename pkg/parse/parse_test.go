@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/takutakahashi/share.tpl/pkg/cfg"
+	"github.com/takutakahashi/tnp/pkg/cfg"
 )
 
 func TestExecute(t *testing.T) {

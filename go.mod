@@ -1,4 +1,4 @@
-module github.com/takutakahashi/share.tpl
+module github.com/takutakahashi/tnp
 
 go 1.15
 

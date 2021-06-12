@@ -7,7 +7,7 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/sprig"
-	"github.com/takutakahashi/share.tpl/pkg/cfg"
+	"github.com/takutakahashi/tnp/pkg/cfg"
 )
 
 func Show(path string) (string, error) {
