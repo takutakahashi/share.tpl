@@ -27,7 +27,7 @@ func ParsePath(filePath string) (Config, error) {
 	if _, err := ioutil.ReadDir(filePath); err != nil {
 		filePath = path.Dir(filePath)
 	}
-	f, err := ioutil.ReadFile(fmt.Sprintf("%s/.share.yaml", filePath))
+	f, err := ioutil.ReadFile(fmt.Sprintf("%s/.tnp.yaml", filePath))
 	if err != nil {
 		return cfg, err
 	}

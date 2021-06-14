@@ -35,7 +35,7 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 	ret := map[string]File{}
 	if infos, err := ioutil.ReadDir(inputRootPath); err == nil {
 		for _, info := range infos {
-			if info.Name() == ".share.yaml" {
+			if info.Name() == ".tnp.yaml" {
 				continue
 			}
 			r, err := ExecuteFiles(conf, fmt.Sprintf("%s/%s", inputRootPath, info.Name()), fmt.Sprintf("%s/%s", outputRootPath, info.Name()), data)
