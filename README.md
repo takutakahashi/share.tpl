@@ -2,14 +2,12 @@
 
 Global Templating and Snippet sharing Manager
 
-`snip` is pronounced the same word `temp`
-
 ## Usage
 
 ### List template
 
 ```
-$ tpl list
+$ snip list
 github.com/takutakahashi/clipboad/git/new_branch
 github.com/takutakahashi/templates/project_template/go
 github.com/awesome-tpl/good-template
