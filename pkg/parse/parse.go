@@ -56,6 +56,9 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 			return nil, err
 		}
 		d, err := Execute(conf, buf, data)
+		if err != nil {
+			return nil, errors.New(fmt.Sprintf("failed to execute file %s, error: %s", inputRootPath, err.Error()))
+		}
 		ret[outputRootPath] = File{Data: d, Perm: info.Mode().Perm()}
 	}
 	return ret, nil
