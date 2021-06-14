@@ -14,7 +14,7 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name: "life.go",
+		Name: "snip",
 		Action: func(c *cli.Context) error {
 			sets := c.StringSlice("set")
 			output := c.String("output")
