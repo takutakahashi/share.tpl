@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/takutakahashi/tnp/cmd/operation"
+	"github.com/takutakahashi/snip/cmd/operation"
 	"github.com/urfave/cli/v2"
 )
 

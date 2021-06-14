@@ -1,8 +1,8 @@
-# tnp
+# snip
 
 Global Templating and Snippet sharing Manager
 
-`tnp` is pronounced the same word `temp`
+`snip` is pronounced the same word `temp`
 
 ## Usage
 
@@ -18,7 +18,7 @@ github.com/awesome-tpl/good-template
 
 ### Describe template
 ```
-$ tnp describe {clip name}
+$ snip describe {clip name}
 Title: awesome snippet
 Description: This is VeryVery Good snippet.
 Argments:
@@ -38,7 +38,7 @@ Hello @@(username)! your email address is @@(email).
 
 In HOME directory:
 ```
-.tnp.yaml
-.tnp/config.yaml
-.local/tnp/config.yaml
+.snip.yaml
+.snip/config.yaml
+.local/snip/config.yaml
 ```

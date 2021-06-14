@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/takutakahashi/tnp/pkg/parse"
+	"github.com/takutakahashi/snip/pkg/parse"
 )
 
 func Write(data map[string]parse.File) error {
