@@ -37,7 +37,7 @@ func snippet(target string) bool {
 		if info.Name() == "snippet" {
 			snippet = true
 		}
-		if info.Name() == ".share.yaml" {
+		if info.Name() == ".snip.yaml" {
 			conf = true
 		}
 	}
@@ -69,7 +69,7 @@ func exportDir(opt ExportOpt) (ExportOut, error) {
 	if opt.OutputDirPath == "" {
 		return ExportOut{}, errors.New("output path is not found")
 	}
-	conf, err := cfg.ParsePath(fmt.Sprintf("%s/.share.yaml", opt.Path))
+	conf, err := cfg.ParsePath(fmt.Sprintf("%s/.snip.yaml", opt.Path))
 	if err != nil {
 		return ExportOut{}, err
 	}
