@@ -1,4 +1,4 @@
-module github.com/takutakahashi/tnp
+module github.com/takutakahashi/snip
 
 go 1.15
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/imdario/mergo"
-	"github.com/takutakahashi/tnp/pkg/cfg"
+	"github.com/takutakahashi/snip/pkg/cfg"
 )
 
 type File struct {
@@ -35,7 +35,7 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 	ret := map[string]File{}
 	if infos, err := ioutil.ReadDir(inputRootPath); err == nil {
 		for _, info := range infos {
-			if info.Name() == ".tnp.yaml" {
+			if info.Name() == ".snip.yaml" {
 				continue
 			}
 			r, err := ExecuteFiles(conf, fmt.Sprintf("%s/%s", inputRootPath, info.Name()), fmt.Sprintf("%s/%s", outputRootPath, info.Name()), data)
