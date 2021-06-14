@@ -70,7 +70,7 @@ func Execute(conf cfg.Config, in []byte, data map[string]string) ([]byte, error)
 }
 
 func execute(in []byte, data map[string]string) ([]byte, error) {
-	tmpl, err := template.New("file.txt").Funcs(sprig.TxtFuncMap()).Parse(string(in))
+	tmpl, err := template.New("file.txt").Funcs(sprig.TxtFuncMap()).Delims("@@(", ")").Parse(string(in))
 	if err != nil {
 		return nil, err
 	}

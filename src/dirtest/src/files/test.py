@@ -1,1 +1,1 @@
-print("files {{ .name }}")
+print("files @@( .name )")
