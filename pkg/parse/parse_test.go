@@ -28,7 +28,7 @@ func TestExecute(t *testing.T) {
 						{Name: "hangly"},
 					},
 				},
-				in: []byte(`hello {{ .name }}, are you {{ .hangly }}?`),
+				in: []byte(`hello @@( .name ), are you @@( .hangly )?`),
 				data: map[string]string{
 					"name":   "bob",
 					"hangly": "HANGLY",
@@ -46,7 +46,7 @@ func TestExecute(t *testing.T) {
 						{Name: "hangly", Default: "HANGLY"},
 					},
 				},
-				in: []byte(`hello {{ .name }}, are you {{ .hangly }}?`),
+				in: []byte(`hello @@( .name ), are you @@( .hangly )?`),
 				data: map[string]string{
 					"name": "bob",
 				},
@@ -63,7 +63,7 @@ func TestExecute(t *testing.T) {
 						{Name: "hangly"},
 					},
 				},
-				in: []byte(`hello {{ .name }}, are you {{ .hangly }}?`),
+				in: []byte(`hello @@( .name ), are you @@( .hangly )?`),
 				data: map[string]string{
 					"name": "bob",
 				},

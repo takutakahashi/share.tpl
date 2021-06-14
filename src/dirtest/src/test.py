@@ -1,1 +1,1 @@
-print("{{ .name }}")
+print("@@( .name )")
