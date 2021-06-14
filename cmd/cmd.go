@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/takutakahashi/snip/cmd/operation"
+	"github.com/takutakahashi/snip/pkg/global"
 	"github.com/urfave/cli/v2"
 )
 
@@ -55,6 +56,15 @@ func main() {
 				Name:        "list",
 				Description: "list templates",
 				Action: func(c *cli.Context) error {
+					s, err := global.LoadSetting()
+					if err != nil {
+						return err
+					}
+					out, err := operation.List(s)
+					if err != nil {
+						return err
+					}
+					fmt.Println(out)
 					return nil
 				},
 			},

@@ -1,6 +1,6 @@
 package operation
 
-import "github.com/takutakahashi/tnp/pkg/global"
+import "github.com/takutakahashi/snip/pkg/global"
 
 type ListOutput struct {
 	Path        string

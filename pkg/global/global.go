@@ -24,9 +24,9 @@ func LoadSetting() (Setting, error) {
 		return Setting{}, err
 	}
 	paths := []string{
-		"%s/.tnp.yaml",
-		"%s/.tnp/config.yaml",
-		"%s/.local/tnp/config.yaml",
+		"%s/.snip.yaml",
+		"%s/.snip/config.yaml",
+		"%s/.local/snip/config.yaml",
 	}
 	for _, path := range paths {
 		f, err := ioutil.ReadFile(fmt.Sprintf(path, home))
