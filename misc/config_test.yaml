@@ -1,0 +1,4 @@
+repositories:
+  - name: takutaka
+    type: git
+    uri: ssh://git@github.com:takutakahashi/snippets.git

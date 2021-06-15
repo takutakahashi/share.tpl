@@ -56,7 +56,7 @@ func main() {
 				Name:        "list",
 				Description: "list templates",
 				Action: func(c *cli.Context) error {
-					s, err := global.LoadSetting()
+					s, err := global.LoadSetting("")
 					if err != nil {
 						return err
 					}
@@ -64,8 +64,7 @@ func main() {
 					if err != nil {
 						return err
 					}
-					fmt.Println(out)
-					return nil
+					return operation.PrintList(out)
 				},
 			},
 			{

@@ -24,3 +24,10 @@ func Write(data map[string]parse.File) error {
 	}
 	return nil
 }
+
+func PrintList(out []ListOutput) error {
+	for _, o := range out {
+		fmt.Println(o.Name)
+	}
+	return nil
+}
