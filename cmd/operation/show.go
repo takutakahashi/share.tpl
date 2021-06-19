@@ -10,8 +10,12 @@ import (
 	"github.com/takutakahashi/snip/pkg/cfg"
 )
 
-func Show(path string) (string, error) {
-	cfg, err := cfg.ParsePath(path)
+func (op Operation) Show(path string) (string, error) {
+	p, err := op.extractPath(path)
+	if err != nil {
+		return "", err
+	}
+	cfg, err := cfg.ParsePath(p)
 	if err != nil {
 		return "", err
 	}

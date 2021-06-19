@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 
 	"github.com/takutakahashi/snip/pkg/cfg"
-	"github.com/takutakahashi/snip/pkg/global"
 	"gopkg.in/yaml.v2"
 )
 
@@ -16,10 +15,10 @@ type ListOutput struct {
 	Description string
 }
 
-func List(s global.SnipConfig) ([]ListOutput, error) {
+func (op Operation) List() ([]ListOutput, error) {
 	ret := []ListOutput{}
-	for _, repo := range s.Repositories {
-		path := fmt.Sprintf("%s/%s", s.Setting.BaseDir, repo.Name)
+	for _, repo := range op.g.Repositories {
+		path := fmt.Sprintf("%s/%s", op.g.Setting.BaseDir, repo.Name)
 		out, err := listWithPath(path)
 		if err != nil {
 			return nil, err

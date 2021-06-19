@@ -5,6 +5,6 @@ run: build
 list: build
 	dist/cmd --config ./misc/config_test.yaml list 
 show: build
-	dist/cmd  --config ./misc/config_test.yaml show snippets
+	dist/cmd  --config ./misc/config_test.yaml show snippets/single
 dir: build
-	dist/cmd  --output misc/dist snippets/project
+	dist/cmd --config ./misc/config_test.yaml --output misc/dist snippets/project

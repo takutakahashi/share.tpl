@@ -19,8 +19,15 @@ func main() {
 			sets := c.StringSlice("set")
 			output := c.String("output")
 			path := c.Args().First()
-			_ = sets
 			data := map[string]string{}
+			s, err := global.LoadSetting(c.String("config"))
+			if err != nil {
+				return err
+			}
+			op, err := operation.New(s)
+			if err != nil {
+				return err
+			}
 			for _, s := range sets {
 				sp := strings.Split(s, "=")
 				if len(sp) != 2 {
@@ -28,7 +35,7 @@ func main() {
 				}
 				data[sp[0]] = sp[1]
 			}
-			out, err := operation.Export(operation.ExportOpt{
+			out, err := op.Export(operation.ExportOpt{
 				Path:          path,
 				OutputDirPath: output,
 				Data:          data,
@@ -65,7 +72,11 @@ func main() {
 					if err != nil {
 						return err
 					}
-					out, err := operation.List(s)
+					op, err := operation.New(s)
+					if err != nil {
+						return err
+					}
+					out, err := op.List()
 					if err != nil {
 						return err
 					}
@@ -77,7 +88,15 @@ func main() {
 				Description: "show templates",
 				Action: func(c *cli.Context) error {
 					path := c.Args().First()
-					out, err := operation.Show(path)
+					s, err := global.LoadSetting(c.String("config"))
+					if err != nil {
+						return err
+					}
+					op, err := operation.New(s)
+					if err != nil {
+						return err
+					}
+					out, err := op.Show(path)
 					if err != nil {
 						return err
 					}

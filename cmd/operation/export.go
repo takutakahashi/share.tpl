@@ -19,7 +19,12 @@ type ExportOut struct {
 	Files map[string]parse.File
 }
 
-func Export(opt ExportOpt) (ExportOut, error) {
+func (op Operation) Export(opt ExportOpt) (ExportOut, error) {
+	path, err := op.extractPath(opt.Path)
+	if err != nil {
+		return ExportOut{}, err
+	}
+	opt.Path = path
 	if snippet(opt.Path) {
 		return exportFile(opt)
 	} else {

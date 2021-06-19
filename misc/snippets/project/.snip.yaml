@@ -1,0 +1,5 @@
+description: "dir template"
+values:
+- name: name
+  describe: name of user 
+  default: alice
