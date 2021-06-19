@@ -8,6 +8,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Snippet struct {
+	Name string `json:"name"`
+}
+
 type Config struct {
 	Description string  `json:"description"`
 	Type        string  `json:"type"`

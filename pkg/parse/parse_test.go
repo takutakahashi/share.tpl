@@ -111,13 +111,13 @@ func TestExecuteFiles(t *testing.T) {
 						},
 					},
 				},
-				inputRootPath:  "../../src/dirtest",
-				outputRootPath: "../../src/dest",
+				inputRootPath:  "../../misc/snippets/project",
+				outputRootPath: "../../misc/dist",
 				data:           map[string]string{},
 			},
 			want: map[string]File{
-				"../../src/dest/src/files/test.py": {Data: []byte(`print("files alice")`), Perm: 0664},
-				"../../src/dest/src/test.py":       {Data: []byte(`print("alice")`), Perm: 0664},
+				"../../misc/dist/src/files/test.py": {Data: []byte(`print("files alice")`), Perm: 0664},
+				"../../misc/dist/src/test.py":       {Data: []byte(`print("alice")`), Perm: 0664},
 			},
 		},
 	}

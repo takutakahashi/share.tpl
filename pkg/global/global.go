@@ -9,38 +9,65 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type Setting struct {
+type SnipConfig struct {
+	Setting      Setting      `json:"setting"`
 	Repositories []Repository `json:"repositories"`
+	Includes     []Include    `json:"include"`
+}
+
+type Setting struct {
+	BaseDir string `json:"basedir"`
 }
 
 type Repository struct {
-	Path string `json:"path"`
+	Name string `json:"name"`
+	URI  string `json:"uri"`
+	Type string `json:"type"`
 }
 
-func LoadSetting() (Setting, error) {
-	s := &Setting{}
+type Include struct{}
+
+func LoadSetting(filepath string) (SnipConfig, error) {
+	s := &SnipConfig{}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return Setting{}, err
+		return SnipConfig{}, err
 	}
 	paths := []string{
 		"%s/.snip.yaml",
 		"%s/.snip/config.yaml",
 		"%s/.local/snip/config.yaml",
 	}
+	if filepath != "" {
+		paths = []string{filepath}
+	}
 	for _, path := range paths {
 		f, err := ioutil.ReadFile(fmt.Sprintf(path, home))
 		if err != nil {
-			s = nil
-			continue
+			f, err = ioutil.ReadFile(path)
+			if err != nil {
+				s = nil
+				continue
+			}
 		}
 		if err := yaml.Unmarshal(f, s); err != nil {
 			s = nil
 			continue
 		}
 		if s != nil {
-			return *s, nil
+			return fillDefault(*s)
 		}
 	}
-	return Setting{}, errors.New("failed to load configuration")
+	return SnipConfig{}, errors.New("failed to load configuration")
+}
+
+func fillDefault(s SnipConfig) (SnipConfig, error) {
+	if s.Setting.BaseDir == "" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return SnipConfig{}, err
+		}
+		s.Setting.BaseDir = fmt.Sprintf("%s/.snip", home)
+	}
+	return s, nil
 }
