@@ -16,10 +16,10 @@ type ListOutput struct {
 	Description string
 }
 
-func List(s global.Setting) ([]ListOutput, error) {
+func List(s global.SnipConfig) ([]ListOutput, error) {
 	ret := []ListOutput{}
 	for _, repo := range s.Repositories {
-		path := fmt.Sprintf("%s/%s", s.BaseDir, repo.Name)
+		path := fmt.Sprintf("%s/%s", s.Setting.BaseDir, repo.Name)
 		out, err := listWithPath(path)
 		if err != nil {
 			return nil, err

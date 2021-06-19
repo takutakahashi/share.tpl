@@ -41,6 +41,7 @@ func main() {
 			}
 			return operation.Write(out.Files)
 		},
+
 		Flags: []cli.Flag{
 			&cli.StringSliceFlag{
 				Name:  "set",
@@ -50,13 +51,17 @@ func main() {
 				Name:  "output",
 				Usage: "output dir path",
 			},
+			&cli.StringFlag{
+				Name:  "config",
+				Usage: "config path",
+			},
 		},
 		Commands: []*cli.Command{
 			{
 				Name:        "list",
 				Description: "list templates",
 				Action: func(c *cli.Context) error {
-					s, err := global.LoadSetting("")
+					s, err := global.LoadSetting(c.String("config"))
 					if err != nil {
 						return err
 					}

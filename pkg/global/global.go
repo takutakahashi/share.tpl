@@ -9,10 +9,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type Setting struct {
-	BaseDir      string       `json:"base_dir"`
+type SnipConfig struct {
+	Setting      Setting      `json:"setting"`
 	Repositories []Repository `json:"repositories"`
 	Includes     []Include    `json:"include"`
+}
+
+type Setting struct {
+	BaseDir string `json:"basedir"`
 }
 
 type Repository struct {
@@ -23,11 +27,11 @@ type Repository struct {
 
 type Include struct{}
 
-func LoadSetting(filepath string) (Setting, error) {
-	s := &Setting{}
+func LoadSetting(filepath string) (SnipConfig, error) {
+	s := &SnipConfig{}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return Setting{}, err
+		return SnipConfig{}, err
 	}
 	paths := []string{
 		"%s/.snip.yaml",
@@ -54,16 +58,16 @@ func LoadSetting(filepath string) (Setting, error) {
 			return fillDefault(*s)
 		}
 	}
-	return Setting{}, errors.New("failed to load configuration")
+	return SnipConfig{}, errors.New("failed to load configuration")
 }
 
-func fillDefault(s Setting) (Setting, error) {
-	if s.BaseDir == "" {
+func fillDefault(s SnipConfig) (SnipConfig, error) {
+	if s.Setting.BaseDir == "" {
 		home, err := os.UserHomeDir()
 		if err != nil {
-			return Setting{}, err
+			return SnipConfig{}, err
 		}
-		s.BaseDir = fmt.Sprintf("%s/.snip", home)
+		s.Setting.BaseDir = fmt.Sprintf("%s/.snip", home)
 	}
 	return s, nil
 }

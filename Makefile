@@ -3,7 +3,7 @@ build:
 run: build
 	DEBUG=true dist/cmd src
 list: build
-	dist/cmd list
+	dist/cmd --config ./misc/config_test.yaml list 
 show: build
 	dist/cmd show src
 dir: build

@@ -3,6 +3,8 @@ package global
 import (
 	"reflect"
 	"testing"
+
+	"gopkg.in/yaml.v2"
 )
 
 func TestLoadSetting(t *testing.T) {
@@ -12,16 +14,19 @@ func TestLoadSetting(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    Setting
+		want    SnipConfig
 		wantErr bool
 	}{
 		{
 			name: "ok",
 			args: args{filepath: "../../misc/config_test.yaml"},
-			want: Setting{
+			want: SnipConfig{
+				Setting: Setting{
+					BaseDir: "misc",
+				},
 				Repositories: []Repository{
 					{
-						Name: "takutaka",
+						Name: "snippets",
 						Type: "git",
 						URI:  "ssh://git@github.com:takutakahashi/snippets.git"},
 				},
@@ -37,6 +42,8 @@ func TestLoadSetting(t *testing.T) {
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
+				b, _ := yaml.Marshal(tt.want)
+				t.Logf("%s", string(b))
 				t.Errorf("LoadSetting() = %v, want %v", got, tt.want)
 			}
 		})
