@@ -104,6 +104,21 @@ func main() {
 					return nil
 				},
 			},
+			{
+				Name:        "update",
+				Description: "update repositories",
+				Action: func(c *cli.Context) error {
+					s, err := global.LoadSetting(c.String("config"))
+					if err != nil {
+						return err
+					}
+					op, err := operation.New(s)
+					if err != nil {
+						return err
+					}
+					return op.Update()
+				},
+			},
 		},
 	}
 
