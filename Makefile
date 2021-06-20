@@ -8,3 +8,5 @@ show: build
 	dist/cmd  --config ./misc/config_test.yaml show snippets/single
 dir: build
 	dist/cmd --config ./misc/config_test.yaml --output misc/dist snippets/project
+update: build
+	dist/cmd --config ./misc/config_test.yaml update

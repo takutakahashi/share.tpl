@@ -2,5 +2,4 @@ setting:
   basedir: "misc"
 repositories:
   - name: snippets
-    type: git
-    uri: ssh://git@github.com:takutakahashi/snippets.git
+    type: manual

@@ -20,9 +20,10 @@ type Setting struct {
 }
 
 type Repository struct {
-	Name string `json:"name"`
-	URI  string `json:"uri"`
-	Type string `json:"type"`
+	Name     string `json:"name"`
+	URI      string `json:"uri"`
+	Type     string `json:"type"`
+	Revision string `json:"revision"`
 }
 
 type Include struct{}
