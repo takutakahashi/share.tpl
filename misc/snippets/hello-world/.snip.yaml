@@ -1,0 +1,5 @@
+description: hello snippet
+values:
+  - name: user
+    description: user name
+    default: alice
