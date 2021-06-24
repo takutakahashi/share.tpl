@@ -28,7 +28,7 @@ func TestLoadSetting(t *testing.T) {
 					{
 						Name: "snippets",
 						Type: "git",
-						URI:  "ssh://git@github.com:takutakahashi/snippets.git"},
+						URI:  "git@github.com:takutakahashi/snippets.git"},
 				},
 			},
 			wantErr: false,

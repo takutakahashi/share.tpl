@@ -7,9 +7,13 @@ import (
 )
 
 func TestRepo_Update(t *testing.T) {
+	os.Setenv("GITHUB_USERNAME", "takutakahashi")
+	token, _ := ioutil.ReadFile("../../.ignore/token")
+	os.Setenv("GITHUB_TOKEN", string(token))
+
 	type fields struct {
 		BaseDir    string
-		Credential Credential
+		Credential *Credential
 		Name       string
 		Type       string
 		URI        string
@@ -24,11 +28,29 @@ func TestRepo_Update(t *testing.T) {
 			name: "ok",
 			fields: fields{
 				BaseDir:    "fill by test",
-				Credential: Credential{},
+				Credential: nil,
 				Name:       "snippets",
 				Type:       "git",
 				URI:        "https://github.com/takutakahashi/snippets.git",
 				Revision:   "main",
+			},
+		},
+		{
+			name: "with credential",
+			fields: fields{
+				BaseDir: "fill by test",
+				Credential: &Credential{
+					Username: Secret{
+						EnvName: "GITHUB_USERNAME",
+					},
+					Password: Secret{
+						EnvName: "GITHUB_TOKEN",
+					},
+				},
+				Name:     "snippets",
+				Type:     "git",
+				URI:      "https://github.com/takutakahashi/private-snippets.git",
+				Revision: "main",
 			},
 		},
 	}
