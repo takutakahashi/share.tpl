@@ -1,0 +1,20 @@
+setting:
+  basedir: "misc"
+repositories:
+  - name: snippets
+    type: manual
+  - name: snippets2
+    type: git
+    uri: https://github.com/takutakahashi/snippets.git
+  - name: snippets3
+    type: git
+    uri: git@github.com:takutakahashi/snippets.git
+  - name: snippets4
+    type: git
+    uri: https://github.com/takutakahashi/private-snippets.git
+    revision: main
+    credential:
+      username:
+        envname: GITHUB_USERNAME
+      password:
+        envname: GITHUB_TOKEN

@@ -2,4 +2,5 @@ setting:
   basedir: "misc"
 repositories:
   - name: snippets
-    type: manual
+    type: git
+    uri: git@github.com:takutakahashi/snippets.git

@@ -1,12 +1,12 @@
 build:
 	go build -o dist/cmd cmd/cmd.go
 run: build
-	DEBUG=true dist/cmd --config ./misc/config_test.yaml snippets/single
+	DEBUG=true dist/cmd --config ./example/global_config.yaml snippets/single
 list: build
-	dist/cmd --config ./misc/config_test.yaml list 
+	dist/cmd --config ./example/global_config.yaml list 
 show: build
-	dist/cmd  --config ./misc/config_test.yaml show snippets/single
+	dist/cmd  --config ./example/global_config.yaml show snippets/single
 dir: build
-	dist/cmd --config ./misc/config_test.yaml --output misc/dist snippets/project
+	dist/cmd --config ./example/global_config.yaml --output misc/dist snippets/project
 update: build
-	dist/cmd --config ./misc/config_test.yaml update
+	dist/cmd --config ./example/global_config.yaml update

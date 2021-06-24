@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/takutakahashi/snip/pkg/repo"
 	"gopkg.in/yaml.v2"
 )
 
@@ -20,10 +21,11 @@ type Setting struct {
 }
 
 type Repository struct {
-	Name     string `json:"name"`
-	URI      string `json:"uri"`
-	Type     string `json:"type"`
-	Revision string `json:"revision"`
+	Name       string          `json:"name"`
+	URI        string          `json:"uri"`
+	Type       string          `json:"type"`
+	Revision   string          `json:"revision"`
+	Credential repo.Credential `json:"credential"`
 }
 
 type Include struct{}
