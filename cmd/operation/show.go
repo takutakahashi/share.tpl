@@ -8,7 +8,36 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/takutakahashi/snip/pkg/cfg"
+	"github.com/takutakahashi/snip/pkg/global"
+	"github.com/urfave/cli/v2"
 )
+
+func CommandShow() *cli.Command {
+	return &cli.Command{
+		Name:        "show",
+		Description: "show templates",
+		Action:      DoShow,
+	}
+}
+
+func DoShow(c *cli.Context) error {
+	path := c.Args().First()
+	s, err := global.LoadSetting(c.String("config"))
+	if err != nil {
+		return err
+	}
+	op, err := New(s)
+	if err != nil {
+		return err
+	}
+	out, err := op.Show(path)
+	if err != nil {
+		return err
+	}
+	fmt.Println(out)
+	return nil
+
+}
 
 func (op Operation) Show(path string) (string, error) {
 	p, err := op.extractPath(path)
