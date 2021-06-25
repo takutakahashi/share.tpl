@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 
 	"github.com/takutakahashi/snip/pkg/cfg"
+	"github.com/takutakahashi/snip/pkg/global"
+	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v2"
 )
 
@@ -13,6 +15,31 @@ type ListOutput struct {
 	Path        string
 	Name        string
 	Description string
+}
+
+func CommandList() *cli.Command {
+	return &cli.Command{
+		Name:        "list",
+		Description: "list templates",
+		Action:      DoList,
+	}
+}
+
+func DoList(c *cli.Context) error {
+	s, err := global.LoadSetting(c.String("config"))
+	if err != nil {
+		return err
+	}
+	op, err := New(s)
+	if err != nil {
+		return err
+	}
+	out, err := op.List()
+	if err != nil {
+		return err
+	}
+	return PrintList(out)
+
 }
 
 func (op Operation) List() ([]ListOutput, error) {

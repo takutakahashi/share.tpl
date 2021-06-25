@@ -4,9 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
+	"strings"
 
 	"github.com/takutakahashi/snip/pkg/cfg"
+	"github.com/takutakahashi/snip/pkg/global"
 	"github.com/takutakahashi/snip/pkg/parse"
+	"github.com/urfave/cli/v2"
 )
 
 type ExportOpt struct {
@@ -17,6 +21,63 @@ type ExportOpt struct {
 
 type ExportOut struct {
 	Files map[string]parse.File
+}
+
+func CommandExport() *cli.Command {
+	return &cli.Command{
+		Name:        "export",
+		Description: "export templates",
+		Flags: []cli.Flag{
+			&cli.StringSliceFlag{
+				Name:  "set",
+				Usage: "set variables. multiple value",
+			},
+			&cli.StringFlag{
+				Name:  "output",
+				Usage: "output dir path",
+			},
+			&cli.StringFlag{
+				Name:  "config",
+				Usage: "config path",
+			},
+		},
+		Action: DoExport,
+	}
+}
+
+func DoExport(c *cli.Context) error {
+
+	sets := c.StringSlice("set")
+	output := c.String("output")
+	path := c.Args().First()
+	data := map[string]string{}
+	s, err := global.LoadSetting(c.String("config"))
+	if err != nil {
+		return err
+	}
+	op, err := New(s)
+	if err != nil {
+		return err
+	}
+	for _, s := range sets {
+		sp := strings.Split(s, "=")
+		if len(sp) != 2 {
+			return errors.New("invalid args")
+		}
+		data[sp[0]] = sp[1]
+	}
+	out, err := op.Export(ExportOpt{
+		Path:          path,
+		OutputDirPath: output,
+		Data:          data,
+	})
+	if err != nil {
+		return err
+	}
+	if os.Getenv("DEBUG") != "" {
+		fmt.Println(out.Files)
+	}
+	return Write(out.Files)
 }
 
 func (op Operation) Export(opt ExportOpt) (ExportOut, error) {
