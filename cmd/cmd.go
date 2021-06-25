@@ -64,6 +64,7 @@ func main() {
 			},
 		},
 		Commands: []*cli.Command{
+			operation.CommandExec(),
 			{
 				Name:        "list",
 				Description: "list templates",
