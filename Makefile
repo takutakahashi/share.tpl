@@ -10,3 +10,5 @@ dir: build
 	dist/cmd --config ./example/global_config.yaml --output misc/dist snippets/project
 update: build
 	dist/cmd --config ./example/global_config.yaml update
+exec: build
+	dist/cmd --config ./example/global_config.yaml exec snippets2/exec-test
