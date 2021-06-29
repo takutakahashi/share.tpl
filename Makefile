@@ -7,7 +7,7 @@ list: build
 show: build
 	dist/cmd  --config ./example/global_config.yaml show snippets/single
 dir: build
-	dist/cmd --config ./example/global_config.yaml --output misc/dist snippets/project
+	dist/cmd --config ./example/global_config.yaml snippets/project
 update: build
 	dist/cmd --config ./example/global_config.yaml update
 exec: build

@@ -132,12 +132,15 @@ func exportFile(opt ExportOpt) (ExportOut, error) {
 }
 
 func exportDir(opt ExportOpt) (ExportOut, error) {
-	if opt.OutputDirPath == "" {
-		return ExportOut{}, errors.New("output path is not found")
-	}
 	conf, err := cfg.ParsePath(fmt.Sprintf("%s/.snip.yaml", opt.Path))
 	if err != nil {
 		return ExportOut{}, err
+	}
+	if opt.OutputDirPath == "" {
+		if conf.Output == "" {
+			return ExportOut{}, errors.New("output path is not found")
+		}
+		opt.OutputDirPath = conf.Output
 	}
 	files, err := parse.ExecuteFiles(conf, opt.Path, opt.OutputDirPath, opt.Data)
 	if err != nil {
