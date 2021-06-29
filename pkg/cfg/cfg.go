@@ -15,6 +15,7 @@ type Snippet struct {
 type Config struct {
 	Description string  `json:"description"`
 	Type        string  `json:"type"`
+	Output      string  `json:"output"`
 	Values      []Value `json:"values"`
 }
 
