@@ -2,8 +2,13 @@ package operation
 
 import (
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"os/exec"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/takutakahashi/snip/pkg/global"
 	"github.com/urfave/cli/v2"
 )
@@ -35,6 +40,8 @@ func CommandExec() *cli.Command {
 func DoExec(c *cli.Context) error {
 	sets := c.StringSlice("set")
 	path := c.Args().First()
+	dryRun := c.Bool("dry-run")
+	quiet := c.Bool("quiet")
 	data := map[string]string{}
 	for _, s := range sets {
 		sp := strings.Split(s, "=")
@@ -51,9 +58,60 @@ func DoExec(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	return op.Exec(path, data)
+	return op.Exec(path, data, dryRun, quiet)
 }
 
-func (op Operation) Exec(path string, data map[string]string) error {
-	return nil
+func (op Operation) Exec(path string, data map[string]string, dryRun, quiet bool) error {
+	out, err := op.Export(ExportOpt{
+		Path:          path,
+		OutputDirPath: "",
+		Data:          data,
+	})
+	if err != nil {
+		return err
+	}
+	if _, ok := out.Files["stdout"]; !ok {
+		return errors.New("Executable command is not found. use stdout snippets")
+	}
+	f, err := ioutil.TempFile(op.g.Setting.BaseDir, "tmp-")
+	if err != nil {
+		return err
+	}
+	defer os.Remove(f.Name())
+	_, err = f.Write(out.Files["stdout"].Data)
+	if err != nil {
+		return err
+	}
+	if dryRun {
+		logrus.Infof("bash %s", string(out.Files["stdout"].Data))
+		return nil
+	}
+	if !quiet {
+		logrus.Info("You are attempt to exec below script:")
+		logrus.Infof("\n---\n%s\n---", string(out.Files["stdout"].Data))
+		if !confirm() {
+			return errors.New("execution was declined.")
+		}
+	}
+	stdout, err := exec.Command("bash", f.Name()).CombinedOutput()
+	fmt.Print(string(stdout))
+	return err
+}
+
+func confirm() bool {
+	var s string
+
+	fmt.Printf("(y/N): ")
+	_, err := fmt.Scan(&s)
+	if err != nil {
+		panic(err)
+	}
+
+	s = strings.TrimSpace(s)
+	s = strings.ToLower(s)
+
+	if s == "y" || s == "yes" {
+		return true
+	}
+	return false
 }
