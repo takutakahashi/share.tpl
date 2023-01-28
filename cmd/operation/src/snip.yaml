@@ -1,0 +1,8 @@
+name: new-snippet
+output: .
+description: new snippet
+### add values here
+# values:
+#   - name: name
+#     description: snippet name
+#     default: "new snippet"

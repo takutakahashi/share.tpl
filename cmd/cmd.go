@@ -15,6 +15,7 @@ func main() {
 		Action: export.Action,
 		Flags:  export.Flags,
 		Commands: []*cli.Command{
+			operation.CommandNew(),
 			operation.CommandExec(),
 			operation.CommandList(),
 			operation.CommandShow(),
