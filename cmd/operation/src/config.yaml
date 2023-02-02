@@ -1,0 +1,5 @@
+setting:
+  basedir: {{ .BaseDir }}
+repositories:
+  - name: example
+    type: manual

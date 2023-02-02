@@ -20,6 +20,7 @@ func main() {
 			operation.CommandList(),
 			operation.CommandShow(),
 			operation.CommandUpdate(),
+			operation.CommandInit(),
 		},
 	}
 
