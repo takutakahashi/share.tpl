@@ -65,7 +65,7 @@ func (op Operation) Exec(path string, data map[string]string, dryRun, quiet bool
 	out, err := op.Export(ExportOpt{
 		Path:          path,
 		OutputDirPath: "",
-		Data:          data,
+		Sets:          data,
 	})
 	if err != nil {
 		return err

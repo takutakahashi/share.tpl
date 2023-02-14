@@ -7,16 +7,18 @@ import (
 	"os"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/takutakahashi/snip/pkg/cfg"
 	"github.com/takutakahashi/snip/pkg/global"
 	"github.com/takutakahashi/snip/pkg/parse"
 	"github.com/urfave/cli/v2"
+	"gopkg.in/yaml.v3"
 )
 
 type ExportOpt struct {
-	Path          string
-	OutputDirPath string
-	Data          map[string]string
+	Path          string            `yaml:"path"`
+	OutputDirPath string            `yaml:"output"`
+	Sets          map[string]string `yaml:"sets"`
 }
 
 type ExportOut struct {
@@ -40,37 +42,54 @@ func CommandExport() *cli.Command {
 				Name:  "config",
 				Usage: "config path",
 			},
+			&cli.StringFlag{
+				Name:  "from",
+				Usage: "set config file path",
+			},
 		},
 		Action: DoExport,
 	}
 }
 
 func DoExport(c *cli.Context) error {
-
-	sets := c.StringSlice("set")
-	output := c.String("output")
-	path := c.Args().First()
-	data := map[string]string{}
+	setsConfigPath := c.String("from")
+	logrus.Info(setsConfigPath)
 	s, err := global.LoadSetting(c.String("config"))
 	if err != nil {
 		return err
 	}
+	var o ExportOpt
+	if setsConfigPath != "" {
+		o, err = parseOpt(setsConfigPath)
+		if err != nil {
+			return err
+		}
+	} else {
+		sets := c.StringSlice("set")
+		output := c.String("output")
+		path := c.Args().First()
+		data := map[string]string{}
+		for _, s := range sets {
+			sp := strings.Split(s, "=")
+			if len(sp) != 2 {
+				return errors.New("invalid args")
+			}
+			data[sp[0]] = sp[1]
+
+		}
+		o = ExportOpt{
+			Path:          path,
+			OutputDirPath: output,
+			Sets:          data,
+		}
+
+	}
+	logrus.Info(o)
 	op, err := New(s)
 	if err != nil {
 		return err
 	}
-	for _, s := range sets {
-		sp := strings.Split(s, "=")
-		if len(sp) != 2 {
-			return errors.New("invalid args")
-		}
-		data[sp[0]] = sp[1]
-	}
-	out, err := op.Export(ExportOpt{
-		Path:          path,
-		OutputDirPath: output,
-		Data:          data,
-	})
+	out, err := op.Export(o)
 	if err != nil {
 		return err
 	}
@@ -123,7 +142,7 @@ func exportFile(opt ExportOpt) (ExportOut, error) {
 	if err != nil {
 		return ExportOut{}, err
 	}
-	out, err := parse.Execute(conf, in, opt.Data)
+	out, err := parse.Execute(conf, in, opt.Sets)
 	if err != nil {
 		return ExportOut{}, err
 	}
@@ -142,7 +161,7 @@ func exportDir(opt ExportOpt) (ExportOut, error) {
 		}
 		opt.OutputDirPath = conf.Output
 	}
-	files, err := parse.ExecuteFiles(conf, opt.Path, opt.OutputDirPath, opt.Data)
+	files, err := parse.ExecuteFiles(conf, opt.Path, opt.OutputDirPath, opt.Sets)
 	if err != nil {
 		return ExportOut{}, err
 	}
@@ -155,4 +174,14 @@ func exportDir(opt ExportOpt) (ExportOut, error) {
 func exportFiles(opt ExportOpt) (ExportOut, error) {
 	ret := ExportOut{}
 	return ret, nil
+}
+
+func parseOpt(p string) (ExportOpt, error) {
+	ret := ExportOpt{}
+	f, err := os.ReadFile(p)
+	if err != nil {
+		return ret, err
+	}
+	err = yaml.Unmarshal(f, &ret)
+	return ret, err
 }
