@@ -3,7 +3,7 @@ package operation
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"github.com/takutakahashi/snip/pkg/cfg"
 	"github.com/takutakahashi/snip/pkg/global"
@@ -65,7 +65,7 @@ type s struct {
 func listWithPath(path string) ([]ListOutput, error) {
 	snippets := s{}
 	ret := []ListOutput{}
-	buf, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", path, ".root.snip.yaml"))
+	buf, err := os.ReadFile(fmt.Sprintf("%s/%s", path, ".root.snip.yaml"))
 	if err != nil {
 		return nil, err
 	}

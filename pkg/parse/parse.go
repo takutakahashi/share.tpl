@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"text/template"
 
@@ -33,7 +32,7 @@ ExecuteFiles(".", "dist", data) ->
 // TODO: impl
 func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data map[string]string) (map[string]File, error) {
 	ret := map[string]File{}
-	if infos, err := ioutil.ReadDir(inputRootPath); err == nil {
+	if infos, err := os.ReadDir(inputRootPath); err == nil {
 		for _, info := range infos {
 			if info.Name() == ".snip.yaml" {
 				continue
@@ -51,7 +50,7 @@ func ExecuteFiles(conf cfg.Config, inputRootPath, outputRootPath string, data ma
 		if err != nil {
 			return nil, err
 		}
-		buf, err := ioutil.ReadFile(inputRootPath)
+		buf, err := os.ReadFile(inputRootPath)
 		if err != nil {
 			return nil, err
 		}

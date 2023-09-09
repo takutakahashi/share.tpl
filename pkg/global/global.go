@@ -3,7 +3,6 @@ package global
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/takutakahashi/snip/pkg/repo"
@@ -45,9 +44,9 @@ func LoadSetting(filepath string) (SnipConfig, error) {
 		paths = []string{filepath}
 	}
 	for _, path := range paths {
-		f, err := ioutil.ReadFile(fmt.Sprintf(path, home))
+		f, err := os.ReadFile(fmt.Sprintf(path, home))
 		if err != nil {
-			f, err = ioutil.ReadFile(path)
+			f, err = os.ReadFile(path)
 			if err != nil {
 				s = nil
 				continue

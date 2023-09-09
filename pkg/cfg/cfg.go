@@ -2,7 +2,7 @@ package cfg
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path"
 
 	"gopkg.in/yaml.v3"
@@ -27,10 +27,10 @@ type Value struct {
 
 func ParsePath(filePath string) (Config, error) {
 	cfg := Config{}
-	if _, err := ioutil.ReadDir(filePath); err != nil {
+	if _, err := os.ReadDir(filePath); err != nil {
 		filePath = path.Dir(filePath)
 	}
-	f, err := ioutil.ReadFile(fmt.Sprintf("%s/.snip.yaml", filePath))
+	f, err := os.ReadFile(fmt.Sprintf("%s/.snip.yaml", filePath))
 	if err != nil {
 		return cfg, err
 	}
