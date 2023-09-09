@@ -8,6 +8,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 type Credential struct {
@@ -88,7 +89,29 @@ func (g GitRepo) cmd(action string, args []string) error {
 }
 
 func (g GitRepo) cloneWithCredential() error {
-
+	logrus.Infof("Cloning %s", g.uri)
+	if g.revision == "" {
+		_, err := git.PlainClone(g.dirpath, false, &git.CloneOptions{
+			Auth: &http.BasicAuth{
+				Username: g.credential.Username,
+				Password: g.credential.Password,
+			},
+			URL:           g.uri,
+			ReferenceName: plumbing.NewBranchReferenceName("master"),
+		})
+		if err != nil {
+			_, err := git.PlainClone(g.dirpath, false, &git.CloneOptions{
+				Auth: &http.BasicAuth{
+					Username: g.credential.Username,
+					Password: g.credential.Password,
+				},
+				URL:           g.uri,
+				ReferenceName: plumbing.NewBranchReferenceName("main"),
+			})
+			return err
+		}
+		return nil
+	}
 	_, err := git.PlainClone(g.dirpath, false, &git.CloneOptions{
 		Auth: &http.BasicAuth{
 			Username: g.credential.Username,
