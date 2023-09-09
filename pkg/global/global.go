@@ -36,6 +36,7 @@ func LoadSetting(filepath string) (SnipConfig, error) {
 		return SnipConfig{}, err
 	}
 	paths := []string{
+		"%s/.config/snip/config.yaml",
 		"%s/.snip.yaml",
 		"%s/.snip/config.yaml",
 		"%s/.local/snip/config.yaml",

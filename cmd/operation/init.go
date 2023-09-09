@@ -53,6 +53,6 @@ func DoInit(c *cli.Context) error {
 		struct{ BaseDir string }{BaseDir: fmt.Sprintf("%s/.config/snip", os.Getenv("HOME"))}); err != nil {
 		return err
 	}
-	logrus.Info("Created config.yaml to %s", s)
+	logrus.Infof("Created config.yaml to %s", s)
 	return nil
 }
